@@ -7,5 +7,6 @@
 - down id
 - new oldId;newId -> zet op console de nieuwe id als zijn id de oude is
 en een nieuwe player op de gui
+- hello piId
 
 id: is een repressentatie welke player je bent. Dit kan bv virus1 zijn of rolletje2 of winkelkar
