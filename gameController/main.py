@@ -44,6 +44,7 @@ def addPlayer(piName):
     #add player to user list
     #player heeft zoizo een state die zegt welk type hij is
 
+#do on kill or add in cart
 def changeplayer(id):
     for type in PlayerType:
         if(users[id].type == type):
@@ -52,6 +53,18 @@ def changeplayer(id):
             #dispach new creation of type
             break
 
+def changePlayerYPos(id, isUp):
+    #get player
+    #add up or down to pos
+    #save
+    #dispache move
+
+#do elke gameloop in een thread
+def changePlayerXPos(id):
+    #get player
+    #add left(virus) or right(wc_rol) to pos
+    #save
+    #dispache move
 
 class PlayerType(Enum):
     WC_ROL = 0
