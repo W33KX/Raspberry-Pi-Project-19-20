@@ -76,6 +76,8 @@ def changePlayerYPos(id, isUp):
     #get player
     user = users[id]
     #add up or down to pos
+    if isUp:
+        user.moveY(10)
     #save
     #dispache move
 
@@ -84,6 +86,10 @@ def changePlayerXPos(id):
     #get player
     user = users[id]
     #add left(virus) or right(wc_rol) to pos
+    if user.type == PlayerType.VIRUS:
+        user.moveX(-10)
+    elif user.type == PlayerType.WC_ROL:
+        user.moveX(10)
     #save
     #dispache move
 
