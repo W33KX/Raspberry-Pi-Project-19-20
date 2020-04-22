@@ -1,3 +1,10 @@
+from enum import Enum
+
+class PlayerType(Enum):
+    WC_ROL = 0
+    VIRUS = 1
+    WINKEL_KAR = 2
+
 class User:
     def __init__(self, piName):
         self.name = piName
@@ -16,8 +23,3 @@ class User:
         self.y = y
     def setType(type):
         self.type = type
-
-class PlayerType(Enum):
-    WC_ROL = 0
-    VIRUS = 1
-    WINKEL_KAR = 2

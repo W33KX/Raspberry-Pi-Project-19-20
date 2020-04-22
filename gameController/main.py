@@ -2,6 +2,12 @@
 #made with 4 spaced tabs
 from random import randrange
 from enum import Enum
+from user import User
+
+class PlayerType(Enum):
+    WC_ROL = 0
+    VIRUS = 1
+    WINKEL_KAR = 2
 
 users = {}
 types = {}
@@ -68,6 +74,7 @@ def changeplayer(id, newType):
 
 def changePlayerYPos(id, isUp):
     #get player
+    user = users[id]
     #add up or down to pos
     #save
     #dispache move
@@ -75,6 +82,7 @@ def changePlayerYPos(id, isUp):
 #do elke gameloop in een thread
 def changePlayerXPos(id):
     #get player
+    user = users[id]
     #add left(virus) or right(wc_rol) to pos
     #save
     #dispache move
@@ -82,8 +90,3 @@ def changePlayerXPos(id):
 def addPlayerToType(type, piName):
     users[piName].setType(type)
     types[type].append(users[piName])
-
-class PlayerType(Enum):
-    WC_ROL = 0
-    VIRUS = 1
-    WINKEL_KAR = 2
