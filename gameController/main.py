@@ -80,6 +80,8 @@ class GameManager:
         user = users[id]
         #add up or down to pos
         if isUp:
+            user.moveY(-10)
+        else:
             user.moveY(10)
         #save
         #dispache move
