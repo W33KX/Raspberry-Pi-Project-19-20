@@ -12,14 +12,14 @@ class User:
         self.y = 0
         self.type = PlayerType.WC_ROL
     
-    def moveX(amount):
+    def moveX(self, amount):
         self.x = self.x + amount
 
-    def moveY(amount):
+    def moveY(self, amount):
         self.y = self.y + amount
 
-    def resetPos(x = 0, y = 0):
+    def resetPos(self, x = 0, y = 0):
         self.x = x
         self.y = y
-    def setType(type):
+    def setType(self, type):
         self.type = type
