@@ -3,6 +3,8 @@
 from random import randrange
 from enum import Enum
 from user import User
+from threading import Thread
+import clientThreading 
 
 gameManagerInstance = None
 
@@ -112,10 +114,14 @@ def getGameManagerInstance():
     global gameManagerInstance
     return gameManagerInstance
 
+def gameloop():
+        while True:
+            enter = input("Press Enter to End")
+            if len(enter) > -1:
+                break
+
 if __name__ == '__main__':
     setup()
     #create thread for mqtt and game loop
-    while True:
-        enter = input("Press Enter to End")
-        if len(enter) > -1:
-            break
+    gameloopThread = Thread(gameloop)
+    mqttThread = Thread(clientThreading.MQTT)
