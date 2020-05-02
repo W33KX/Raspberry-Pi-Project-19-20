@@ -14,7 +14,35 @@ class GameConsole:
 	__player_number = 0
 	__current_mode = 0
 	__current_text = [" ", " ", " ", " "]
+	__current_DCM = [24,24,24,24]
 	__current_digit = 0
+
+	__truthtable_7seg =
+		[[1,1,1,1,1,1,0],	#0
+		[0,1,1,0,0,0,0],	#1
+		[1,1,0,1,1,0,1],	#2
+		[1,1,1,1,0,0,1],	#3
+		[0,1,1,0,0,1,1], 	#4
+		[1,0,1,1,0,1,1], 	#5
+		[1,0,1,1,1,1,1],	#6
+		[1,1,1,0,0,0,0],	#7
+		[1,1,1,1,1,1,1],	#8
+		[1,1,1,1,0,1,1],	#9
+		[1,1,1,0,1,1,1],	#A
+		[0,0,1,1,1,1,1],	#b
+		[1,0,0,1,1,1,0],	#C
+		[0,1,1,1,1,0,1],	#d
+		[1,0,0,1,1,1,1],	#E
+		[1,0,0,0,1,1,1],	#F
+		[1,0,1,1,1,1,1],	#G
+		[0,1,1,0,1,1,1],	#H
+		[0,1,1,0,0,0,0],	#I
+		[0,1,1,1,1,0,0],	#J
+		[1,1,1,1,1,1,0],	#O
+		[1,1,0,0,1,1,1],	#P
+		[1,0,1,1,0,1,1], 	#S
+		[0,1,1,1,1,1,0]]	#U
+
 
 	#__________________PRIVATE FUNCTIONS__________________
 	###################INITIALIZE PROGRAM#################
@@ -43,11 +71,47 @@ class GameConsole:
 			print ("Writing to mode leds failed\nError:\n" + str(e))
 
 	#######################SET DISPLAY####################
-	def __set_leds (self, digit):
+	def __set_display (self, digit):
 		try:
 			#code will be continued
 		except Exception as e:
 			print ("Writing to display failed\nError:\n" + str(e))
+
+	#################TRANSLATE & ENCODE MESSAGE###########
+	def __translate (self):
+		for i in __current_text:
+			if (i.isdigit()):
+				__current_DCM[ = int(i)
+			elif (i = "A"):
+				__current_DCM = 10
+                        elif (i = "B"):
+                                __current_DCM = 10
+                        elif (i = "C"):
+                                __current_DCM = 10
+                        elif (i = "D"):
+                                __current_DCM = 10
+                        elif (i = "E"):
+                                __current_DCM = 10
+                        elif (i = "F"):
+                                __current_DCM = 10
+                        elif (i = "G"):
+                                __current_DCM = 10
+                        elif (i = "H"):
+                                __current_DCM = 10
+                        elif (i = "I"):
+                                __current_DCM = 10
+                        elif (i = "J"):
+                                __current_DCM = 10
+                        elif (i = "O"):
+                                __current_DCM = 10
+                        elif (i = "P"):
+                                __current_DCM = 10
+                        elif (i = "S"):
+                                __current_DCM = 10
+                        elif (i = "A"):
+                                __current_DCM = 10
+			else:
+				__current_DCM[i] = __truthtable_7seg[len(__truthtable_7seg)]
 
 	#__________________PUBLIC FUNCTIONS___________________
 	#######################SET PLAYER#####################
