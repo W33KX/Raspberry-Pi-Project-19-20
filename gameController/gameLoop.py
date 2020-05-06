@@ -9,3 +9,11 @@ def Loop():
             gameManager.changePlayerXPos(userId)
             #check collision
         sleep(2)
+
+def checkcollission(userid, gameManager):
+    user = gameManager.users[userId]
+    for userId in gameManager.users:
+        otherUser = gameManager.users[userId]
+        if otherUser.x == user.x and otherUser.y == user.y and otherUser.type != user.type:
+            gameManager.changeplayer(userId, user.type)
+            break
