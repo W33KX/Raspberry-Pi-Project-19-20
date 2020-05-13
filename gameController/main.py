@@ -17,12 +17,13 @@ class GameManager:
     def __init__(self):
         self.users = {}
         self.types = {}
+        self.score = 0
         self.types[PlayerType.WC_ROL] = []
         self.types[PlayerType.VIRUS] = []
         self.types[PlayerType.WINKEL_KAR] = []
         self.screenWidth = 1000
         self.screenHeight = 600
-
+        
     def addPlayerToType(self, type, piName):
         self.users[piName].setType(type)
         if type == PlayerType.WC_ROL:
@@ -111,6 +112,10 @@ class GameManager:
         elif user.type == PlayerType.WC_ROL:
             user.moveX(10)
         #dispache move
+    
+    def incrementScore():
+        self.score = self.score + 1
+        #send mqtt message for score
 
 def setup():
     global gameManagerInstance
@@ -132,7 +137,7 @@ def inputloop(gameloopThread, mqttThread):
                 break
 
 def test(gameManagerInstance):
-    playernames= ["test1", "test2", "test3"]
+    playernames= ["test1", "test2", "test3", "test4"]
     for playername in playernames:
         gameManagerInstance.addPlayer(playername)
     print(gameManagerInstance)

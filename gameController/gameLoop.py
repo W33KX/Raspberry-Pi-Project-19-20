@@ -19,6 +19,9 @@ def checkcollission(user, gameManager):
     for userId in gameManager.users:
         otherUser = gameManager.users[userId]
         if otherUser.x == user.x and otherUser.y == user.y and otherUser.type != user.type:
+            #virus tegen wc rol => wc rol changeplayer
+            #wc rol tegen winkel kar => wc rol changeplayer en update score
+            #virus tegen kar => reset score 
             gameManager.changeplayer(user.name, user.type)
             break
 
