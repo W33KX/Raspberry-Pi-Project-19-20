@@ -2,18 +2,26 @@ from main import getGameManagerInstance
 from user import User
 from time import sleep
 
-def Loop():
-    gameManager = getGameManagerInstance()
+def Loop(gameManager):
+    print(gameManager)
     while True:
         for userId in gameManager.users:
+            user = gameManager.users[userId]
             gameManager.changePlayerXPos(userId)
             #check collision
+            checkcollission(user, gameManager)
+            checkPlayerOutOfBounds(user, gameManager)
+            print(user, flush=True)
+
         sleep(2)
 
-def checkcollission(userid, gameManager):
-    user = gameManager.users[userId]
+def checkcollission(user, gameManager):
     for userId in gameManager.users:
         otherUser = gameManager.users[userId]
         if otherUser.x == user.x and otherUser.y == user.y and otherUser.type != user.type:
-            gameManager.changeplayer(userId, user.type)
+            gameManager.changeplayer(user.name, user.type)
             break
+
+def checkPlayerOutOfBounds(user, gameManager):
+    if user.x >= gameManager.screenWidth or user.x <= 10:
+        gameManager.changeplayer(user.name, user.type)

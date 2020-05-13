@@ -1,9 +1,8 @@
 import paho.mqtt.client as paho
 from enum import Enum
-from main import getGameManagerInstance
 
 #deze functie moet nog aangepast worden naarmate de client is opgebouwd.
-def MQTT():
+def MQTT(gameManager):
   def on_subscribe(client, userdata, mid, granted_qos):
     print("Subscribed!")
 
@@ -17,6 +16,4 @@ def MQTT():
   client.connect("broker.mqttdashboard.com", port=1883, keepalive=60)
   client.subscribe("testtopic/test", qos=1)
   
-  gameManager = main.getGameManagerInstance()
-
   client.loop_forever()

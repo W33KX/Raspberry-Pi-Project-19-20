@@ -23,3 +23,7 @@ class User:
         self.y = y
     def setType(self, type):
         self.type = type
+    
+    #toString methode
+    def __str__(self):
+        return str(self.__class__) + ": " + str(self.__dict__)
