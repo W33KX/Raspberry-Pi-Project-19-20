@@ -116,6 +116,10 @@ class GameManager:
     def incrementScore():
         self.score = self.score + 1
         #send mqtt message for score
+    
+    def resetScore():
+        self.score = 0
+        #send mqtt message for score
 
 def setup():
     global gameManagerInstance
