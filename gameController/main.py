@@ -23,8 +23,14 @@ class GameManager:
         self.types[PlayerType.WINKEL_KAR] = []
         self.screenWidth = 1000
         self.screenHeight = 600
+        self.internalPlayerId = 0
         
     def addPlayerToType(self, type, piName):
+        self.users[piName].setId(self.internalPlayerId)
+        if self.internalPlayerId + 1 > 9:
+            self.internalPlayerId = 0
+        else:
+            self.internalPlayerId = self.internalPlayerId + 1
         self.users[piName].setType(type)
         if type == PlayerType.WC_ROL:
             self.users[piName].resetPos(x = 10 , y = randrange(10, self.screenHeight - 10))
@@ -33,6 +39,7 @@ class GameManager:
         else:
             self.users[piName].resetPos(x = self.screenWidth - 10 , y= randrange(10, self.screenHeight - 10))
         self.types[type].append(self.users[piName])
+        #send message user created/changed user object
 
     def addPlayer(self, piName):
         #add player to user list
@@ -88,7 +95,6 @@ class GameManager:
                 self.types[type].remove(self.users[id])
                 #add new to array
                 self.addPlayerToType(newType, id)
-                #dispach new creation of type
                 break
 
     def changePlayerYPos(self, id, isUp):

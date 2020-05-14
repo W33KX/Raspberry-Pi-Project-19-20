@@ -8,11 +8,15 @@ class PlayerType(Enum):
 class User:
     def __init__(self, piName):
         self.name = piName
+        self.id = 0
         self.x = 0
         self.y = 0
         self.type = PlayerType.WC_ROL
         self.playerDimensions = { str(PlayerType.WC_ROL): 100, str(PlayerType.VIRUS): 120, str(PlayerType.WINKEL_KAR): 150 }
     
+    def setId(self, id):
+        self.id = id
+
     def moveX(self, amount):
         self.x = self.x + amount
 
