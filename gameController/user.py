@@ -11,6 +11,7 @@ class User:
         self.x = 0
         self.y = 0
         self.type = PlayerType.WC_ROL
+        self.playerDimensions = { str(PlayerType.WC_ROL): 100, str(PlayerType.VIRUS): 120, str(PlayerType.WINKEL_KAR): 150 }
     
     def moveX(self, amount):
         self.x = self.x + amount
@@ -21,9 +22,13 @@ class User:
     def resetPos(self, x = 0, y = 0):
         self.x = x
         self.y = y
+    
     def setType(self, type):
         self.type = type
     
+    def getDimension(self):
+        return self.playerDimensions[str(self.type)]
+
     #toString methode
     def __str__(self):
         return str(self.__class__) + ": " + str(self.__dict__)

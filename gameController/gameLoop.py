@@ -18,7 +18,10 @@ def Loop(gameManager):
 def checkcollission(user, gameManager):
     for userId in gameManager.users:
         otherUser = gameManager.users[userId]
-        if otherUser.x == user.x and otherUser.y == user.y and otherUser.type != user.type:
+        if otherUser.type == user.type:
+            continue
+        if checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
+            print("Colission: " + user.name + " And " + otherUser.name)
             #virus tegen wc rol => wc rol changeplayer
             if user.type == 0 and otherUser.type == 1:
                 gameManager.changeplayer(user.name, user.type)
@@ -39,6 +42,12 @@ def checkcollission(user, gameManager):
                 gameManager.resetScore()
                 gameManager.changeplayer(user.name, user.type)
             break
+
+def checkXCollision(user, otherUser):
+    return otherUser.x < user.x + user.getDimension() and otherUser.x + otherUser.getDimension() > user.x
+
+def checkYCollision(user, otherUser):
+    return otherUser.y < user.y + user.getDimension() and otherUser.y + otherUser.getDimension() > user.y
 
 def checkPlayerOutOfBounds(user, gameManager):
     if user.x >= gameManager.screenWidth or user.x <= 10:
