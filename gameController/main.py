@@ -24,6 +24,7 @@ class GameManager:
         self.screenWidth = 1000
         self.screenHeight = 600
         self.internalPlayerId = 0
+        mqttmsg = ""
         
     def addPlayerToType(self, type, piName):
         self.users[piName].setId(self.internalPlayerId)
@@ -40,6 +41,7 @@ class GameManager:
             self.users[piName].resetPos(x = self.screenWidth - 10 , y= randrange(10, self.screenHeight - 10))
         self.types[type].append(self.users[piName])
         #send message user created/changed user object
+        mqttmsg = "createdPlayer"
 
     def addPlayer(self, piName):
         #add player to user list
@@ -86,6 +88,7 @@ class GameManager:
                 else:
                     #add player to winkel kar
                     self.addPlayerToType(PlayerType.WINKEL_KAR, piName)
+        
 
     #do on kill or add in cart
     def changeplayer(self, id, newType):
@@ -122,10 +125,12 @@ class GameManager:
     def incrementScore():
         self.score = self.score + 1
         #send mqtt message for score
+        mqttmsg = "incrementScore"
     
     def resetScore():
         self.score = 0
         #send mqtt message for score
+        mqttmsg = "resetScore"
 
 def setup():
     global gameManagerInstance
@@ -162,7 +167,7 @@ if __name__ == '__main__':
     gameloopThread = multiprocessing.Process(target=gameLoop.Loop, args=(gameManager,))
     gameloopThread.deamon = True
     gameloopThread.start()
-    mqttThread = multiprocessing.Process(target=clientThreading.MQTT, args=(gameManager,))
+    mqttThread = multiprocessing.Process(target=clientThreading.MQTT, args=(gameManager.mqttmsg,))
     mqttThread.deamon = True
     mqttThread.start()
     inputloop(gameloopThread, mqttThread)
