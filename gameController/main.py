@@ -17,8 +17,20 @@ def on_subscribe(client, userdata, mid, granted_qos):
     print("Subscribed!")
 
 def on_message(client, userdata, msg):
+    topic = str(msg.topic)
     mqttmsg = str(msg.payload)
+    print(topic)
+    print(" : ")
     print(mqttmsg)
+
+    if mqttmsg[:1] == "up":
+        player = mqttmsg[3:6]
+    if mqttmsg[:3] == "down":
+        player = mqttmsg[5:8]
+    if mqttmsg[:4] == "hello":
+        player = mqttmsg[6:]
+    
+        
 
 def setup():
     global client
@@ -27,7 +39,7 @@ def setup():
     client.on_message= on_message
     client.username_pw_set("stef", "stef")
     client.connect("rasberrypi.ddns.net", port=1883, keepalive=60)
-    client.subscribe("newtopic/test", qos=1)
+    client.subscribe("project/#", qos=1)
     global gameManagerInstance
     if gameManagerInstance is None:
         gameManagerInstance = GameManager(client)
