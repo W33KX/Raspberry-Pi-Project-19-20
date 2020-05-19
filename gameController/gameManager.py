@@ -36,9 +36,10 @@ class GameManager:
             self.users[piName].resetPos(x = self.screenWidth / 2, y = self.screenHeight / 2)
         else:
             self.users[piName].resetPos(x = self.screenWidth - 10 , y= randrange(10, self.screenHeight - 10))
-        self.types[type].append(self.users[piName])
+        if not self.users[piName] in self.types[type]:
+            self.types[type].append(self.users[piName])
         #send message user created/changed user object
-        mqttmsg = "change;{};{}".format(piName, self.users[piName].id)
+        mqttmsg = "change;{};{};{}".format(piName, self.users[piName].id, self.users[piName].type)
         self.sendMessage("project/changeplayer", mqttmsg)
 
     def addPlayer(self, piName):
