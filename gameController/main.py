@@ -93,10 +93,10 @@ def test(gameManagerInstance):
     playernames= ["test1", "test2", "test3", "test4"]
     for playername in playernames:
         gameManagerInstance.addPlayer(playername)
-    print(gameManagerInstance)
 
 if __name__ == '__main__':
     setup()
     gameManager = getGameManagerInstance()
     test(gameManager)
+    gameManager.sendSummary()
     inputloop()

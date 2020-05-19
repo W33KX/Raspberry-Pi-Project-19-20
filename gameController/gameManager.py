@@ -130,3 +130,7 @@ class GameManager:
         self.score = 0
         #send mqtt message for score
         self.sendMessage("project/score", str(self.score))
+    
+    def sendSummary(self):
+        pinames = self.users.keys()
+        self.sendMessage("project/changeplayer", "getsummary;{}".format(";".join(pinames)))
