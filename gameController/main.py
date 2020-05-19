@@ -19,17 +19,14 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def on_message(client, userdata, msg):
     mqttmsg = str(msg.payload)
     print(mqttmsg)
-    
-def on_publish(client, userdata, mid):
-    print("mid: " + str(mid))
 
 def setup():
     global client
-    client = paho.Client(client_id="client-1",username="stef", password="stef", clean_session=True, userdata=None, protocol=paho.MQTTv31)
+    client = paho.Client(client_id="client-1", clean_session=True, userdata=None, protocol=paho.MQTTv31)
     client.on_subscribe= on_subscribe
     client.on_message= on_message
-    client.on_publish= on_publish
-    client.connect("rasberrypi.dnss.net", port=1883, keepalive=60)
+    client.username_pw_set("stef", "stef")
+    client.connect("rasberrypi.ddns.net", port=1883, keepalive=60)
     client.subscribe("newtopic/test", qos=1)
     global gameManagerInstance
     if gameManagerInstance is None:
