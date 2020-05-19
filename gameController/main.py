@@ -25,12 +25,12 @@ def on_publish(client, userdata, mid):
 
 def setup():
     global client
-    client = paho.Client(client_id="clientId-ejELTYmyEX", clean_session=True, userdata=None, protocol=paho.MQTTv31)
+    client = paho.Client(client_id="client-1",username="stef", password="stef", clean_session=True, userdata=None, protocol=paho.MQTTv31)
     client.on_subscribe= on_subscribe
     client.on_message= on_message
     client.on_publish= on_publish
-    client.connect("broker.mqttdashboard.com", port=1883, keepalive=60)
-    client.subscribe("testtopic/test", qos=1)
+    client.connect("rasberrypi.dnss.net", port=1883, keepalive=60)
+    client.subscribe("newtopic/test", qos=1)
     global gameManagerInstance
     if gameManagerInstance is None:
         gameManagerInstance = GameManager(client)
