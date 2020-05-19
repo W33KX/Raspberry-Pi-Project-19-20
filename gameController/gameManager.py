@@ -20,8 +20,8 @@ class GameManager:
         self.internalPlayerId = 0
         self.mqttClient = client
 
-    def sendMessage(self, message):
-        self.mqttClient.publish("testtopic/test", message)
+    def sendMessage(self, topic, message):
+        self.mqttClient.publish(topic, message)
 
     def addPlayerToType(self, type, piName):
         self.users[piName].setId(self.internalPlayerId)
@@ -38,8 +38,8 @@ class GameManager:
             self.users[piName].resetPos(x = self.screenWidth - 10 , y= randrange(10, self.screenHeight - 10))
         self.types[type].append(self.users[piName])
         #send message user created/changed user object
-        mqttmsg = "createdPlayer"
-        self.sendMessage(mqttmsg)
+        mqttmsg = "change;{};{}".format(piName, self.users[piName].id)
+        self.sendMessage("project/changeplayer", mqttmsg)
 
     def addPlayer(self, piName):
         #add player to user list
@@ -106,8 +106,8 @@ class GameManager:
             user.moveY(-10 if user.y >= 10 else 0)
         else:
             user.moveY(10 if user.y <= (self.screenHeight - 10) else 0)
-        #save
         #dispache move
+        self.sendMessage("project/position", "position;{};{};{};{}".format(user.x, user.y, user.name, user.id))
 
     #do elke gameloop in een thread
     def changePlayerXPos(self, id):
@@ -119,14 +119,14 @@ class GameManager:
         elif user.type == PlayerType.WC_ROL:
             user.moveX(10)
         #dispache move
-        self.sendMessage("MoveX;{}".format(user.name))
+        self.sendMessage("project/player", "position;{};{};{};{}".format(user.x, user.y, user.name, user.id))
 
     def incrementScore():
         self.score = self.score + 1
         #send mqtt message for score
-        mqttmsg = "incrementScore"
+        self.sendMessage("project/score", str(self.score))
     
     def resetScore():
         self.score = 0
         #send mqtt message for score
-        mqttmsg = "resetScore"
+        self.sendMessage("project/score", str(self.score))
