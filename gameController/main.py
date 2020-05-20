@@ -18,7 +18,7 @@ def on_subscribe(client, userdata, mid, granted_qos):
 
 def on_message(client, userdata, msg):
     topic = str(msg.topic)
-    mqttmsg = str(msg.payload)
+    mqttmsg = str(msg.payload.decode("utf-8"))
     print(topic)
     print(" : ")
     print(mqttmsg)
@@ -110,5 +110,4 @@ if __name__ == '__main__':
     setup()
     gameManager = getGameManagerInstance()
     test(gameManager)
-    gameManager.sendSummary()
     inputloop()

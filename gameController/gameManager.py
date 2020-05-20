@@ -39,7 +39,7 @@ class GameManager:
         if not self.users[piName] in self.types[type]:
             self.types[type].append(self.users[piName])
         #send message user created/changed user object
-        mqttmsg = "change;{};{};{}".format(piName, self.users[piName].id, self.users[piName].type)
+        mqttmsg = "change;{};{};{}".format(piName, self.users[piName].id, int(self.users[piName].type.value))
         self.sendMessage("project/changeplayer", mqttmsg)
 
     def addPlayer(self, piName):
