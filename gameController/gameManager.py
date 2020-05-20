@@ -31,11 +31,11 @@ class GameManager:
             self.internalPlayerId = self.internalPlayerId + 1
         self.users[piName].setType(type)
         if type == PlayerType.WC_ROL:
-            self.users[piName].resetPos(x = 10 , y = randrange(10, self.screenHeight - 10))
+            self.users[piName].resetPos(x = 120 , y = randrange(70, self.screenHeight - 70, 70))
         elif type == PlayerType.WINKEL_KAR:
             self.users[piName].resetPos(x = self.screenWidth / 2, y = self.screenHeight / 2)
         else:
-            self.users[piName].resetPos(x = self.screenWidth - 10 , y= randrange(10, self.screenHeight - 10))
+            self.users[piName].resetPos(x = self.screenWidth - 25 , y= randrange(70, self.screenHeight - 70, 70))
         if not self.users[piName] in self.types[type]:
             self.types[type].append(self.users[piName])
         #send message user created/changed user object
@@ -104,9 +104,9 @@ class GameManager:
         user = self.users[id]
         #add up or down to pos
         if isUp:
-            user.moveY(-10 if user.y >= 10 else 0)
+            user.moveY(-20 if user.y >= 20 else 0)
         else:
-            user.moveY(10 if user.y <= (self.screenHeight - 10) else 0)
+            user.moveY(20 if user.y <= (self.screenHeight - 20) else 0)
         #dispache move
         self.sendMessage("project/position", "position;{};{};{};{}".format(user.x, user.y, user.name, user.id))
 
@@ -116,9 +116,9 @@ class GameManager:
         user = self.users[id]
         #add left(virus) or right(wc_rol) to pos
         if user.type == PlayerType.VIRUS:
-            user.moveX(-10)
+            user.moveX(-20)
         elif user.type == PlayerType.WC_ROL:
-            user.moveX(10)
+            user.moveX(20)
         #dispache move
         self.sendMessage("project/player", "position;{};{};{};{}".format(user.x, user.y, user.name, user.id))
 
