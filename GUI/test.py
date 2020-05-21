@@ -59,6 +59,16 @@ winkelkar = winkelkar.resize((150,150), Image.ANTIALIAS)
 winkelkar = ImageTk.PhotoImage(winkelkar)
 
 imageList = [fotospeler, fotov, winkelkar]
+score=0
+scoreText = canvas.create_text(500, 20, text=str(score), font="Times 20 bold")
+
+def setScore(_score):
+ global score
+ score=_score
+ global scoreText
+ canvas.delete(scoreText)
+ scoreText = canvas.create_text(500, 20, text="Score: "+str(score), font="Times 20 bold")
+
 
 def addSpeler(piname, _type, _id):
  spelers[piname] = Wcrol(canvas, _id, imageList[int(_type)])
@@ -73,6 +83,8 @@ def on_message(client, userdata, msg):
   addSpeler(message[1], message[3], message[2])
  if message[0] == "position":
   moveSpeler(message[3], message[1], message[2])
+ if message[0] == "score":
+  setScore(message[1])
 
 def on_subsrcibe(client,userdat, mid, qos):
  print("subscibed")
@@ -89,7 +101,8 @@ client.subscribe("project/#", qos=1)
 class Wcrol:
  def __init__(self,canvas,_id,_image):
   self.canvas = canvas
-  self.id = canvas.create_image(x,y,anchor=NE, image=_image)
+  self.id = canvas.create_image(0,0,anchor=NE, image=_image)
+  self.textId = canvas.create_text(0,0, fill="black", text=str(_id))
   self.playerGuiID=_id
   self.x = 0
   self.y = 0
@@ -97,14 +110,12 @@ class Wcrol:
 #coords geeft een array terug van [x1,y1,x2,y2]
  def draw(self):
   self.canvas.coords(self.id,self.x,self.y)
-  pos = self.canvas.coords(self.id)
-  #print(pos)
-  
+  self.canvas.coords(self.textId, self.x+5, self.y)
+
   #de wcrol moet begrensd worden ter hoogte van de X en Y assen
  def move(self, x, y):
   self.x=x
   self.y=y
-  
 
 while True:
  for name in spelers:
