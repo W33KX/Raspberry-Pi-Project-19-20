@@ -23,12 +23,17 @@ def on_message(client, userdata, msg):
     print(" : ")
     print(mqttmsg)
 
-    if mqttmsg[:1] == "up":
-        player = mqttmsg[3:6]
-    if mqttmsg[:3] == "down":
-        player = mqttmsg[5:8]
-    if mqttmsg[:4] == "hello":
+    if mqttmsg[:3] == "up":
+        player = mqttmsg[3:]
+        gameManager.changePlayerYPos(player, True)
+    if mqttmsg[:4] == "down":
+        player = mqttmsg[5:]
+        gameManager.changePlayerYPos(player, False)
+    if mqttmsg[:5] == "hello":
         player = mqttmsg[6:]
+        gameManager.addPlayer(player)
+    if mqttmsg[:10] == "getsummary":
+        gameManager.sendSummary()
     
         
 
