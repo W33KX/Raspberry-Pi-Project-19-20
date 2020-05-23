@@ -1,0 +1,41 @@
+#!/usr/bin/python3
+
+import RPi.GPIO as GPIO
+import time
+
+def initialize ():
+	try:
+		GPIO.setmode(GPIO.BCM)
+		print ("init")
+	except Exception as e:
+		print ("Init failed\n" + str(e))
+
+
+
+class GameConsole:
+	###############PRIVATE VARIABLES#################
+	__seven_seg_pins = [17, 27, 22, 10, 9, 11, 5]
+	__digits = [23, 24, 25, 8]
+	__mode_leds = [7, 1, 12]
+	__up_button = 6
+	__down_butotn = 26
+
+	__player_number = 0
+	####################INITIALIZE###################
+	def __init__ (self):
+		print ("yeedt")
+
+
+
+
+	#_______________PUBLIC FUNCTIONS_________________
+	#################SET PLAYER######################
+
+
+	################RELEASE RECOURCES################
+	def release_recources (self):
+		try:
+			GPIO.cleanup()
+			print ("All cleaned up")
+		except RuntimeWarning:
+			print ("kakapipi")
