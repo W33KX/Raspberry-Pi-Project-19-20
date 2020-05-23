@@ -134,4 +134,4 @@ class GameManager:
     
     def sendSummary(self):
         pinames = self.users.keys()
-        self.sendMessage("project/changeplayer", "getsummary;{}".format(";".join(pinames)))
+        self.sendMessage("project/changeplayer", "summary;{}".format(";".join(pinames)))
