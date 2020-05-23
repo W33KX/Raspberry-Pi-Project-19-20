@@ -1,89 +1,118 @@
 #!/bin/python3
 #made with 4 spaced tabs
-from random import randrange
-from enum import Enum
+import sys
+from gameManager import GameManager
+import paho.mqtt.client as paho
+from user import User
+from time import sleep
 
-users = {}
-types = {}
-types[PlayerType.WC_ROL] = []
-types[PlayerType.VIRUS] = []
-types[PlayerType.WINKEL_KAR] = []
+gameManagerInstance = None
+client = None
 
-def addPlayer(piName):
-    #add player to user list
-    users[piName] = User(piName)
-    choice = randrange(3)
-    if choice == PlayerType.WC_ROL.value:
-        if len(types[PlayerType.WC_ROL]) == 0:
-            #add player to wc rol
-            addPlayerToType(PlayerType.WC_ROL, piName)
-        else:
-            if len(types[PlayerType.WC_ROL]) > len(types[PlayerType.VIRUS]):
-                #add player to virus
-                addPlayerToType(PlayerType.VIRUS, piName)
-            elif len(types[PlayerType.WC_ROL]) > len(winkel_kar):
-                #add player to winkel kar
-                addPlayerToType(PlayerType.WINKEL_KAR, piName)
-            else:
-                #add player to wc rol
-                addPlayerToType(PlayerType.WC_ROL, piName)
-    elif choice == PlayerType.VIRUS.value:
-        if len(types[PlayerType.VIRUS]) == 0:
-            #add player to virus
-            addPlayerToType(PlayerType.VIRUS, piName)
-        else:
-            if len(types[PlayerType.VIRUS]) > len(types[PlayerType.WC_ROL]):
-                #add player to wc rol
-                addPlayerToType(PlayerType.WC_ROL, piName)
-            elif len(types[PlayerType.VIRUS]) > len(types[PlayerType.WINKEL_KAR]):
-                #add player to winkel kar
-                addPlayerToType(PlayerType.WINKEL_KAR, piName)
-            else:
-                #add player to virus
-                addPlayerToType(PlayerType.VIRUS, piName)
-    else:
-        if len(types[PlayerType.WINKEL_KAR]) == 0:
-            addPlayerToType(PlayerType.WINKEL_KAR, piName)
-        else:
-            if len(types[PlayerType.WINKEL_KAR]) > len(types[PlayerType.VIRUS]):
-                #add player to virus
-                addPlayerToType(PlayerType.VIRUS, piName)
-            elif len(types[PlayerType.WINKEL_KAR]) > len(types[PlayerType.WC_ROL]):
-                #add player to wc rol
-                addPlayerToType(PlayerType.WC_ROL, piName)
-            else:
-                #add player to winkel kar
-                addPlayerToType(PlayerType.WINKEL_KAR, piName)
+def getGameManagerInstance():
+    global gameManagerInstance
+    return gameManagerInstance
 
-#do on kill or add in cart
-def changeplayer(id, newType):
-    for type in PlayerType:
-        if(users[id].type == type):
-            #remove current 
-            types[type].remove(users[id])
-            #add new to array
-            addPlayerToType(newType, id)
-            #dispach new creation of type
+def on_subscribe(client, userdata, mid, granted_qos):
+    print("Subscribed!")
+
+def on_message(client, userdata, msg):
+    topic = str(msg.topic)
+    mqttmsg = str(msg.payload.decode("utf-8"))
+    print(topic)
+    print(" : ")
+    print(mqttmsg)
+
+    if mqttmsg[:3] == "up":
+        player = mqttmsg[3:]
+        gameManager.changePlayerYPos(player, True)
+    if mqttmsg[:4] == "down":
+        player = mqttmsg[5:]
+        gameManager.changePlayerYPos(player, False)
+    if mqttmsg[:5] == "hello":
+        player = mqttmsg[6:]
+        gameManager.addPlayer(player)
+    if mqttmsg[:10] == "getsummary":
+        gameManager.sendSummary()
+    
+        
+
+def setup():
+    global client
+    client = paho.Client(client_id="client-1", clean_session=True, userdata=None, protocol=paho.MQTTv31)
+    client.on_subscribe= on_subscribe
+    client.on_message= on_message
+    client.username_pw_set("stef", "stef")
+    client.connect("rasberrypi.ddns.net", port=1883, keepalive=60)
+    client.subscribe("project/#", qos=1)
+    global gameManagerInstance
+    if gameManagerInstance is None:
+        gameManagerInstance = GameManager(client)
+
+
+def inputloop():
+    global client
+    client.loop_start()
+    while True:
+        try:
+            for userId in gameManager.users:
+                user = gameManager.users[userId]
+                gameManager.changePlayerXPos(userId)
+                #check collision
+                checkcollission(user, gameManager)
+                checkPlayerOutOfBounds(user, gameManager)
+                print(user, flush=True)
+
+            sleep(2)
+        except:
+            client.loop_stop()
+            sys.exit()
+
+def checkcollission(user, gameManager):
+    for userId in gameManager.users:
+        otherUser = gameManager.users[userId]
+        if otherUser.type == user.type:
+            continue
+        if checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
+            print("Colission: " + user.name + " And " + otherUser.name)
+            #virus tegen wc rol => wc rol changeplayer
+            if user.type == 0 and otherUser.type == 1:
+                gameManager.changeplayer(user.name, user.type)
+            elif user.type == 1 and otherUser.type == 0:
+                gameManager.changeplayer(otherUser.name, otherUser.type)
+            #wc rol tegen winkel kar => wc rol changeplayer en update score
+            elif user.type == 0 and otherUser.type == 2:
+                gameManager.incrementScore()
+                gameManager.changeplayer(user.name, user.type)
+            elif user.type == 2 and otherUser.type == 0:
+                gameManager.incrementScore()
+                gameManager.changeplayer(otherUser.name, otherUser.type)
+            #virus tegen kar => reset score 
+            elif user.type == 2 and otherUser.type == 1:
+                gameManager.resetScore()
+                gameManager.changeplayer(otherUser.name, otherUser.type)
+            elif user.type == 1 and otherUser.type == 2:
+                gameManager.resetScore()
+                gameManager.changeplayer(user.name, user.type)
             break
 
-def changePlayerYPos(id, isUp):
-    #get player
-    #add up or down to pos
-    #save
-    #dispache move
+def checkXCollision(user, otherUser):
+    return otherUser.x < user.x + user.getDimension() and otherUser.x + otherUser.getDimension() > user.x
 
-#do elke gameloop in een thread
-def changePlayerXPos(id):
-    #get player
-    #add left(virus) or right(wc_rol) to pos
-    #save
-    #dispache move
+def checkYCollision(user, otherUser):
+    return otherUser.y < user.y + user.getDimension() and otherUser.y + otherUser.getDimension() > user.y
 
-def addPlayerToType(type, piName):
-    users[piName].setType(type)
-    types[type].append(users[piName])
+def checkPlayerOutOfBounds(user, gameManager):
+    if user.x >= gameManager.screenWidth or user.x <= 10:
+        gameManager.changeplayer(user.name, user.type)
 
-class PlayerType(Enum):
-    WC_ROL = 0
-    VIRUS = 1
-    WINKEL_KAR = 2
+def test(gameManagerInstance):
+    playernames= ["test1", "test2", "test3", "test4"]
+    for playername in playernames:
+        gameManagerInstance.addPlayer(playername)
+
+if __name__ == '__main__':
+    setup()
+    gameManager = getGameManagerInstance()
+    #test(gameManager)
+    inputloop()
