@@ -33,7 +33,7 @@ class GameManager:
         if type == PlayerType.WC_ROL:
             self.users[piName].resetPos(x = 120 , y = randrange(70, self.screenHeight - 70, 70))
         elif type == PlayerType.WINKEL_KAR:
-            self.users[piName].resetPos(x = self.screenWidth / 2, y = self.screenHeight / 2)
+            self.users[piName].resetPos(x = int(self.screenWidth) / 2, y = int(self.screenHeight) / 2)
         else:
             self.users[piName].resetPos(x = self.screenWidth - 25 , y= randrange(70, self.screenHeight - 70, 70))
         if not self.users[piName] in self.types[type]:
