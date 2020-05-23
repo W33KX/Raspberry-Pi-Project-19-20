@@ -110,7 +110,7 @@ class Wcrol:
 #coords geeft een array terug van [x1,y1,x2,y2]
  def draw(self):
   self.canvas.coords(self.id,self.x,self.y)
-  self.canvas.coords(self.textId, int(self.x)+5, self.y)
+  self.canvas.coords(self.textId, int(float(self.x))+5, self.y)
 
   #de wcrol moet begrensd worden ter hoogte van de X en Y assen
  def move(self, x, y):
