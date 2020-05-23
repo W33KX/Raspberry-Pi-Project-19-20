@@ -114,5 +114,5 @@ def test(gameManagerInstance):
 if __name__ == '__main__':
     setup()
     gameManager = getGameManagerInstance()
-    test(gameManager)
+    #test(gameManager)
     inputloop()
