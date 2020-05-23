@@ -102,6 +102,12 @@ class GameManager:
     def changePlayerYPos(self, id, isUp):
         #get player
         user = self.users[id]
+        if user.type == PlayerType.WINKEL_KAR:
+            if isUp:
+                user.moveX(-20 if user.x >= 400 else 0)
+            else:
+                user.moveX(20 if user.x <= 600 else 0)
+            return
         #add up or down to pos
         if isUp:
             user.moveY(-20 if user.y >= 20 else 0)
