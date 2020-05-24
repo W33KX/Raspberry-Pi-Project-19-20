@@ -62,7 +62,8 @@ def inputloop():
                 print(user, flush=True)
 
             sleep(2)
-        except:
+        except Exeption as e:
+            print(e)
             client.loop_stop()
             sys.exit()
 
@@ -74,22 +75,28 @@ def checkcollission(user, gameManager):
         elif checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
             print("Colission: " + user.name + " And " + otherUser.name)
             #virus tegen wc rol => wc rol changeplayer
-            if user.type == 0 and otherUser.type == 1:
+            if user.type.value == 0 and otherUser.type.value == 1:
+                print("hit virus")
                 gameManager.changeplayer(user.name, user.type)
-            elif user.type == 1 and otherUser.type == 0:
+            elif user.type.value == 1 and otherUser.type.value == 0:
+                print("hit virus")
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #wc rol tegen winkel kar => wc rol changeplayer en update score
-            elif user.type == 0 and otherUser.type == 2:
+            elif user.type.value == 0 and otherUser.type.value == 2:
+                print("hit winkel kar")
                 gameManager.incrementScore()
                 gameManager.changeplayer(user.name, user.type)
-            elif user.type == 2 and otherUser.type == 0:
+            elif user.type.value == 2 and otherUser.type.value == 0:
+                print("hit winkel kar")
                 gameManager.incrementScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #virus tegen kar => reset score 
-            elif user.type == 2 and otherUser.type == 1:
+            elif user.type.value == 2 and otherUser.type.value == 1:
+                print("virus => winkelKar")
                 gameManager.resetScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
-            elif user.type == 1 and otherUser.type == 2:
+            elif user.type.value == 1 and otherUser.type.value == 2:
+                print("virus => winkelKAr")
                 gameManager.resetScore()
                 gameManager.changeplayer(user.name, user.type)
             break

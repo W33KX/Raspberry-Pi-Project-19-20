@@ -104,13 +104,13 @@ class GameManager:
         user = self.users[id]
         if user.type == PlayerType.WINKEL_KAR:
             if isUp:
-                user.moveX(-20 if user.x >= 400 else 0)
+                user.moveX(-20)
             else:
-                user.moveX(20 if user.x <= 600 else 0)
+                user.moveX(20 if user.x < 660 else 0)
             return
         #add up or down to pos
         if isUp:
-            user.moveY(-20 if user.y >= 20 else 0)
+            user.moveY(-20)
         else:
             user.moveY(20 if user.y <= (self.screenHeight - 20) else 0)
         #dispache move
@@ -128,12 +128,12 @@ class GameManager:
         #dispache move
         self.sendMessage("project/player", "position;{};{};{};{}".format(user.x, user.y, user.name, user.id))
 
-    def incrementScore():
+    def incrementScore(self):
         self.score = self.score + 1
         #send mqtt message for score
         self.sendMessage("project/score", str(self.score))
     
-    def resetScore():
+    def resetScore(self):
         self.score = 0
         #send mqtt message for score
         self.sendMessage("project/score", str(self.score))

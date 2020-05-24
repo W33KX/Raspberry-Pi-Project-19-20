@@ -71,6 +71,8 @@ def setScore(_score):
 
 
 def addSpeler(piname, _type, _id):
+ if spelers[piname] != None:
+  spelers[piname].remove()
  spelers[piname] = Wcrol(canvas, _id, imageList[int(_type)])
 
 def moveSpeler(piname, x, y):
@@ -116,6 +118,10 @@ class Wcrol:
  def move(self, x, y):
   self.x=x
   self.y=y
+ 
+ def remove(self):
+  self.canvas.delete(self.id)
+  self.canvas.delete(self.textId)
 
 while True:
  for name in spelers:
