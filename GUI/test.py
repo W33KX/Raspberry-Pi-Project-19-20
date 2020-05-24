@@ -71,7 +71,7 @@ def setScore(_score):
 
 
 def addSpeler(piname, _type, _id):
- if spelers[piname] != None:
+ if piname in spelers.keys():
   spelers[piname].remove()
  spelers[piname] = Wcrol(canvas, _id, imageList[int(_type)])
 
