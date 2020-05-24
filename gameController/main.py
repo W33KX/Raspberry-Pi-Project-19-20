@@ -62,8 +62,7 @@ def inputloop():
                 print(user, flush=True)
 
             sleep(2)
-        except Exeption as e:
-            print(e)
+        except:
             client.loop_stop()
             sys.exit()
 
