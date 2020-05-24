@@ -19,8 +19,6 @@ def on_subscribe(client, userdata, mid, granted_qos):
 def on_message(client, userdata, msg):
     topic = str(msg.topic)
     mqttmsg = str(msg.payload.decode("utf-8"))
-    print(topic)
-    print(" : ")
     print(mqttmsg)
 
     if mqttmsg[:3] == "up":
@@ -73,7 +71,7 @@ def checkcollission(user, gameManager):
         otherUser = gameManager.users[userId]
         if otherUser.type == user.type:
             continue
-        if checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
+        elif checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
             print("Colission: " + user.name + " And " + otherUser.name)
             #virus tegen wc rol => wc rol changeplayer
             if user.type == 0 and otherUser.type == 1:
