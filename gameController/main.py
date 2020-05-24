@@ -21,7 +21,7 @@ def on_message(client, userdata, msg):
     mqttmsg = str(msg.payload.decode("utf-8"))
     print(mqttmsg)
 
-    if mqttmsg[:3] == "up":
+    if mqttmsg[:2] == "up":
         player = mqttmsg[3:]
         gameManager.changePlayerYPos(player, True)
     if mqttmsg[:4] == "down":
