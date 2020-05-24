@@ -3,7 +3,6 @@ import paho.mqtt.client as mqtt
 import RPi.GPIO as GPIO
 import time
 import random
-import sys
 
 __piname = ""
 	#######################ON_MESSAGE####################
@@ -19,7 +18,6 @@ def on_message(client, userdata, msg):
 			set_mode(int(temp[2]))
 			current_piname = str(temp[0])
 			set_player(int(temp[1]))
-			print ("You joined the game with name: {}\nAre you ready Player{}?".format(current_piname, temp[1]))
 		except Exception as e:
 			print (e)
 	elif(MSG[0:7] == "summary"):
@@ -87,6 +85,7 @@ def release_recources ():
 def __publish_button (channel):
 	global client
 	global __current_mode
+	print ("My mode: " + str(__current_mode))
 	if (channel == __up_button):
 		client.publish("project/controller", str("up;" + __piname))
 	elif (channel == __down_button):
@@ -105,9 +104,11 @@ try:
 
 	client.publish("project/controller", "getsummary")
 	random.seed()
-	#print ("WARNING!\nThis code is under development, use at own risk.")
+	print ("WARNING!\nThis code is under development, use at own risk.")
 	tempname = str(random.randrange(100, 999))
 	__piname = "pi" + tempname
+	print ("Name of Pi= " + __piname)
+	client.publish("project/controller", "*jesus has left the chat*")
 	client.publish("project/controller", str("hello;"+__piname))
 
 except Exception as e:
@@ -227,12 +228,13 @@ def update():
 		__set_display(__current_digit)
 		time.sleep(0.005)
 	except KeyboardInterrupt:
-		print ("\nInterrupted by keyboard")
+		print ("Game ended")
+	finally:
+		print ("Closing...")
 		release_recources()
-		print ("Closing game")
-		sys.exit()
+
+	######################MAIN LOOP######################
 client.loop_start()
 while (True):
 	update()
-
 ###########################END OF CODE################################
