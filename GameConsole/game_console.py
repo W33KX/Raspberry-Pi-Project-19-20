@@ -33,7 +33,7 @@ client = mqtt.Client(client_id="client-4", clean_session=True, userdata=None, pr
 
 __player_number = 0
 __current_mode = 0
-__current_text, allpinames = [" ", " ", "1", "2"],[]
+__current_text, allpinames = [" ", " ", " ", " "],[]
 __current_DCM = [24,24,24,24]
 __current_digit = 0
 __truthtable_7seg = [
