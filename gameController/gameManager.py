@@ -104,13 +104,13 @@ class GameManager:
         user = self.users[id]
         if user.type == PlayerType.WINKEL_KAR:
             if isUp:
-                user.moveX(-20)
+                user.moveX(-20 if user.x > 400 else 0)
             else:
                 user.moveX(20 if user.x < 660 else 0)
             return
         #add up or down to pos
         if isUp:
-            user.moveY(-20)
+            user.moveY(-20 if user.y > 20 else 0)
         else:
             user.moveY(20 if user.y <= (self.screenHeight - 20) else 0)
         #dispache move
