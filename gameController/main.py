@@ -76,27 +76,21 @@ def checkcollission(user, gameManager):
             print("Colission: " + user.name + " And " + otherUser.name)
             #virus tegen wc rol => wc rol changeplayer
             if user.type.value == 0 and otherUser.type.value == 1:
-                print("hit virus")
                 gameManager.changeplayer(user.name, user.type)
             elif user.type.value == 1 and otherUser.type.value == 0:
-                print("hit virus")
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #wc rol tegen winkel kar => wc rol changeplayer en update score
             if user.type.value == 0 and otherUser.type.value == 2:
-                print("hit winkel kar")
                 gameManager.incrementScore()
                 gameManager.changeplayer(user.name, user.type)
             elif user.type.value == 2 and otherUser.type.value == 0:
-                print("hit winkel kar")
                 gameManager.incrementScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #virus tegen kar => reset score 
             if user.type.value == 2 and otherUser.type.value == 1:
-                print("virus => winkelKar")
                 gameManager.resetScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             elif user.type.value == 1 and otherUser.type.value == 2:
-                print("virus => winkelKAr")
                 gameManager.resetScore()
                 gameManager.changeplayer(user.name, user.type)
             break
