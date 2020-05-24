@@ -131,12 +131,12 @@ class GameManager:
     def incrementScore(self):
         self.score = self.score + 1
         #send mqtt message for score
-        self.sendMessage("project/score", str(self.score))
+        self.sendMessage("project/score", "score;"+str(self.score))
     
     def resetScore(self):
         self.score = 0
         #send mqtt message for score
-        self.sendMessage("project/score", str(self.score))
+        self.sendMessage("project/score", "score;"+str(self.score))
     
     def sendSummary(self):
         pinames = self.users.keys()

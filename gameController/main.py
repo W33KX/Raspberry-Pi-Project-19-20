@@ -72,7 +72,7 @@ def checkcollission(user, gameManager):
         otherUser = gameManager.users[userId]
         if otherUser.type == user.type:
             continue
-        elif checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
+        if checkXCollision(user, otherUser) and checkYCollision(user, otherUser):
             print("Colission: " + user.name + " And " + otherUser.name)
             #virus tegen wc rol => wc rol changeplayer
             if user.type.value == 0 and otherUser.type.value == 1:
@@ -82,7 +82,7 @@ def checkcollission(user, gameManager):
                 print("hit virus")
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #wc rol tegen winkel kar => wc rol changeplayer en update score
-            elif user.type.value == 0 and otherUser.type.value == 2:
+            if user.type.value == 0 and otherUser.type.value == 2:
                 print("hit winkel kar")
                 gameManager.incrementScore()
                 gameManager.changeplayer(user.name, user.type)
@@ -91,7 +91,7 @@ def checkcollission(user, gameManager):
                 gameManager.incrementScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
             #virus tegen kar => reset score 
-            elif user.type.value == 2 and otherUser.type.value == 1:
+            if user.type.value == 2 and otherUser.type.value == 1:
                 print("virus => winkelKar")
                 gameManager.resetScore()
                 gameManager.changeplayer(otherUser.name, otherUser.type)
